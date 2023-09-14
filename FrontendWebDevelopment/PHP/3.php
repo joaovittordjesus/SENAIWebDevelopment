@@ -14,7 +14,7 @@
     <input type="hidden" name="email" value="<?php echo $_POST["email"]; ?>">
     <input type="hidden" name="birthdate" value="<?php echo $_POST["birthdate"]; ?>">
     <input type="hidden" name="gender" value="<?php echo $_POST["gender"]; ?>">
-    <input type="hidden" name="position" value="<?php echo $_POST["position"]; ?>">
+    <input type="hidden" name="job" value="<?php echo $_POST["job"]; ?>">
     <input type="hidden" name="phone" value="<?php echo $_POST["phone"]; ?>">
     <input type="hidden" name="address" value="<?php echo $_POST["address"]; ?>">
     <input type="hidden" name="city" value="<?php echo $_POST["city"]; ?>">
@@ -30,7 +30,7 @@
     <label>Confirm Your Password</label>
     <input type="password" name="confimpassword" size="10"><br>
 
-    <input type="submit" value="Submit Form">
+    <input type="submit" value="Finish Signup" name="finish" id="finish">
 
 
 </form>

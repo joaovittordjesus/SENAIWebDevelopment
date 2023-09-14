@@ -52,24 +52,28 @@ if($_REQUEST["action"] == "save")
     <script language="JavaScript">
         function validateForm()
         {
-            var name_size = document.forms["validateForm.php"].name.value.lenght;
+            var name_size = document.forms["signup3_3.php"].name.value.lenght;
             if(name_size < 5 || name_size > 64)
             {
                 alert("The field name must have between 5 and 64 characters.");
                 return false;
             }
 
-            var age = document.forms["validateForm.php"].age.value;
+            var age = document.forms["signup3_3.php"].age.value;
             if(isNaN(age) || age < 4 || age > 120)
             {
                 alert("The field age must be filled correctly.");
                 return false;
             }
-            var email = document.forms["validateForm.php"].email.value;
+            var email = document.forms["signup3_3.php"].email.value;
             if(email.length < 5 || email.length > 128 || email.indexOf('@') === -1 || email.indexOf('.') === -1){
-                alert("The email field must be fileed correctly!");
+                alert("The email field must be filled correctly!");
                 return false;
             }
+
+            var gender = document.forms["signup3_3.php"].gender;
+            var sex = false;
+            for();
 
         }
     </script>

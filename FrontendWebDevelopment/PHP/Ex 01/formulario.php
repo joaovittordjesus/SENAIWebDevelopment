@@ -20,7 +20,7 @@
 </head>
 <body>
     <div class="formulario">
-        <form method="POST" action="recebe_dados.php">&nbsp;&nbsp;
+        <form method="POST" action="../4.php">&nbsp;&nbsp;
             <label>Username</label>
             <input type="text" name="username" id="username" placeholder="username">
             <br>

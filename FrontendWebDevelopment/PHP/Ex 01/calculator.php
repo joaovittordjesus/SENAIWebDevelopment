@@ -17,7 +17,7 @@
 
         function __construct() {
             // gera o formulário
-            print "<form method=\"POST\" action=\"calculator.php\">";
+            print ">";
             print "<h2>Programa de Cálculo</h2>";
             print "<p>Primeiro número: ";
             print "<input name=\"n1\" type=\"text\" size=\"5\" maxlength=\"5\" /><br />";

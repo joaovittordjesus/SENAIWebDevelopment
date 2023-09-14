@@ -23,7 +23,7 @@
            echo "Please inform your name correctly";
        }
        if(strlen($email) < 8 || strstr ($email, )){
-
+            echo "The email must have at least 5 characters";
        }
 
     ?>
