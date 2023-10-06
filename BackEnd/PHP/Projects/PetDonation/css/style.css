@@ -1,0 +1,46 @@
+/*Resetting magins & autofilling*/
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/*Body styling*/
+body{
+    font-family: Arial, sas-serif;
+    background-color: #f0f0f0
+}
+
+/*Main container styling*/
+.main-container{
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/*Form styling*/
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+/*Labels Styling*/
+label{
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/*Input fields styling*/
+input[type="text"],
+input[type="date"],
+input[type="tel"],
+input[type="email"],
+input[type="password"]{
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+
