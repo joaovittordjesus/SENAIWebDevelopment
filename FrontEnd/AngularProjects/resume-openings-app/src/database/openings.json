@@ -1,0 +1,25 @@
+{
+  "openings": [
+    {
+      "id": 1,
+      "name": "Junior Frontend Developer",
+      "photo": "photo1.jpg",
+      "description": "Work with HTML, CSS, and JS",
+      "wage": 4000
+    },
+    {
+      "id": 2,
+      "name": "Mid-level Backend Developer",
+      "photo": "photo2.jpg",
+      "description": "Work with Web Development",
+      "wage": 7000
+    },
+    {
+      "id": 3,
+      "name": "Senior Fullstack Developer",
+      "photo": "photo3.jpg",
+      "description": "Work with Web Development",
+      "wage": 10000
+    }
+  ]
+}
