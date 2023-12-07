@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 if ($action === 'carregarItens') {
-    carregarItensCarrinho($conn);
+    carregarItens($conn);
 } elseif ($action === 'excluirItens') {
     excluirItens($conn);
 } elseif ($action === 'comprarItens') {
@@ -24,14 +24,8 @@ if ($action === 'carregarItens') {
 
 $conn->close();
 
-function carregarItensCarrinho($conn) {
-    $result = $conn->query("
-        SELECT p.id_produto, p.nome, p.preco
-        FROM produto p
-        INNER JOIN carrinho_produto cp ON p.id_produto = cp.produto_id_produto
-        WHERE cp.carrinho_id_carrinho = 1
-    ");
-
+function carregarItens($conn) {
+    $result = $conn->query("SELECT * FROM produto");
     $itens = array();
 
     if ($result->num_rows > 0) {
@@ -52,10 +46,7 @@ function excluirItens($conn) {
 
     if (!empty($data->itens)) {
         $itens = implode(',', $data->itens);
-        
-        // Remover os itens da tabela carrinho_produto
-        $conn->query("DELETE FROM carrinho_produto WHERE produto_id_produto IN ($itens)");
-
+        $conn->query("DELETE FROM produto WHERE id_produto IN ($itens)");
         echo json_encode(array('mensagem' => 'Itens excluídos com sucesso.'));
     } else {
         echo json_encode(array('mensagem' => 'Nenhum item selecionado para exclusão.'));
@@ -68,7 +59,6 @@ function comprarItens($conn) {
     if (!empty($data->itens)) {
         $carrinhoId = criarCarrinho($conn);
         adicionarItensCarrinho($conn, $carrinhoId, $data->itens);
-        atualizarEstoque($conn, $data->itens);
         echo json_encode(array('mensagem' => 'Itens comprados com sucesso.'));
     } else {
         echo json_encode(array('mensagem' => 'Nenhum item selecionado para compra.'));
@@ -86,15 +76,7 @@ function adicionarItensCarrinho($conn, $carrinhoId, $itens) {
     }
 }
 
-function atualizarEstoque($conn, $itens) {
-    foreach ($itens as $itemId) {
-        $conn->query("UPDATE produto SET estoque = estoque - 1 WHERE id_produto = $itemId");
-    }
-}
-
-function limparCarrinho($conn) {
-    $data = json_decode(file_get_contents("php://input"));
-
+function limparCarrinho() {
     // Certifique-se de incluir seu arquivo de conexão
     require_once 'conexao.php';
 
@@ -137,4 +119,8 @@ function limparCarrinho($conn) {
     header('Content-Type: application/json');
     echo json_encode($response);
 }
+
+
+
+
 ?>

@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     carregarItensCarrinho();
+    const btnExcluir = document.querySelector('button[data-action="excluirItens"]');
+    const btnComprar = document.querySelector('button[data-action="comprarItens"]');
+    const btnLimparCarrinho = document.querySelector('button[data-action="limparCarrinho"]');
+
+    btnExcluir.addEventListener('click', excluirItens);
+    btnComprar.addEventListener('click', comprarItens);
+    btnLimparCarrinho.addEventListener('click', limparCarrinho);
 });
 
 function carregarItensCarrinho() {
@@ -24,74 +31,105 @@ function carregarItensCarrinho() {
 }
 
 function excluirItens() {
-    const itensSelecionados = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-        .map(checkbox => checkbox.value);
+    const itensSelecionados = obterItensSelecionados();
 
     if (itensSelecionados.length > 0) {
-        fetch('backend.php?action=excluirItens', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ itens: itensSelecionados })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Itens excluídos com sucesso:', data);
-            carregarItensCarrinho();
-        })
-        .catch(error => console.error('Erro ao excluir itens:', error));
+        const quantidadePorItem = obterQuantidadePorItem();
+        const itensParaExcluir = [];
+
+        itensSelecionados.forEach(itemId => {
+            const quantidadeSelecionada = parseInt(quantidadePorItem[itemId], 10) || 0;
+            if (quantidadeSelecionada > 0) {
+                // Se houver mais de 1 item, reduza a quantidade sem excluir do carrinho
+                for (let i = 1; i < quantidadeSelecionada; i++) {
+                    itensParaExcluir.push(itemId);
+                }
+            } else {
+                // Se a quantidade for 0, ou seja, o item foi totalmente removido, exclua do carrinho
+                itensParaExcluir.push(itemId);
+            }
+        });
+
+        if (itensParaExcluir.length > 0) {
+            enviarAcao('excluirItens', { itens: itensParaExcluir }, 'Itens excluídos com sucesso.');
+        } else {
+            console.log('Nenhum item selecionado para exclusão.');
+        }
     } else {
         console.log('Nenhum item selecionado para exclusão.');
     }
 }
 
+// Adicione esta função para obter a quantidade de cada item no carrinho
+function obterQuantidadePorItem() {
+    const quantidadePorItem = {};
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    checkboxes.forEach(checkbox => {
+        const itemId = checkbox.value;
+        const quantidadeInput = document.querySelector(`#quantidade-${itemId}`);
+        quantidadePorItem[itemId] = quantidadeInput ? quantidadeInput.value : 0;
+    });
+
+    return quantidadePorItem;
+}
+
+
+function enviarAcao(acao, data, sucessoMsg) {
+    fetch(`backend.php?action=${acao}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (acao === 'excluirItens') {
+            console.log(sucessoMsg, data);
+            if (data.mensagem === 'Itens excluídos com sucesso.') {
+                carregarItensCarrinho();
+            }
+        } else {
+            console.log(sucessoMsg, data);
+            carregarItensCarrinho();
+        }
+    })
+    .catch(error => console.error(`Erro ao ${acao.toLowerCase()} itens:`, error));
+}
+
+
 function comprarItens() {
-    const itensSelecionados = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-        .map(checkbox => checkbox.value);
+    const itensSelecionados = obterItensSelecionados();
 
     if (itensSelecionados.length > 0) {
-        fetch('backend.php?action=comprarItens', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ itens: itensSelecionados })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Itens comprados com sucesso:', data);
-            carregarItensCarrinho();
-        })
-        .catch(error => console.error('Erro ao comprar itens:', error));
+        enviarAcao('comprarItens', { itens: itensSelecionados }, 'Itens comprados com sucesso.');
     } else {
         console.log('Nenhum item selecionado para compra.');
     }
 }
 
 function limparCarrinho() {
-    // Implemente a lógica para limpar todos os itens do carrinho no banco de dados
-    fetch('backend.php', {
-        method: 'POST',
-        body: JSON.stringify({
-            action: 'limparCarrinho'
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao limpar carrinho');
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert('Carrinho limpo com sucesso: ' + data.mensagem);
-        // Adicione aqui qualquer outra lógica que você queira executar após limpar o carrinho
-    })
-    .catch(error => {
-        console.error('Erro ao limpar carrinho:', error);
-    });
+    enviarAcao('limparCarrinho', {}, 'Carrinho limpo com sucesso.');
 }
 
+function obterItensSelecionados() {
+    return Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+}
+
+function enviarAcao(acao, data, sucessoMsg) {
+    fetch(`backend.php?action=${acao}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(sucessoMsg, data);
+        carregarItensCarrinho();
+    })
+    .catch(error => console.error(`Erro ao ${acao.toLowerCase()} itens:`, error));
+}
