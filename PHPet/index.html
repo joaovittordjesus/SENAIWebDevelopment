@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Configuração da codificação e viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título da página -->
+    <title>Carrinho de Compras</title>
+    
+    <!-- Inclusão do arquivo de estilo externo (styles.css) -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Div principal do carrinho de compras -->
+    <div id="carrinho">
+        <!-- Título do carrinho de compras -->
+        <h1>Carrinho de Compras</h1>
+        
+        <!-- Lista de produtos no carrinho -->
+        <ul id="lista-produtos"></ul>
+        
+        <!-- Botão para excluir itens selecionados -->
+        <button onclick="excluirItens()">Excluir Itens Selecionados</button>
+        
+        <!-- Botão para comprar itens selecionados -->
+        <button onclick="comprarItens()">Comprar Itens Selecionados</button>
+        
+        <!-- Botão para limpar o carrinho -->
+        <button onclick="limparCarrinho()">Limpar Carrinho</button>
+    </div>
+
+    <!-- Inclusão do arquivo de script externo (script.js) -->
+    <script src="script.js"></script>
+</body>
+</html>
